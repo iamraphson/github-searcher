@@ -1,0 +1,30 @@
+{
+  "name": "github-searcher",
+  "description": "github contributors to a repo search application",
+  "main": "server.js",
+  "authors": [
+    "Ayeni Olusegun <nsegun5@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "git",
+    "MEAN",
+    "NodeJS",
+    "AngularJS",
+    "search",
+    "API"
+  ],
+  "homepage": "https://github.com/iamraphson/github-searcher",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ],
+  "resolutions": {
+    "angular": "^1.5.8"
+  }
+}

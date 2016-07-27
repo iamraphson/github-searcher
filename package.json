@@ -38,5 +38,10 @@
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
     "request": "^2.74.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
