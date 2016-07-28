@@ -19,3 +19,12 @@ app.controller('AuthController', function($scope, $auth, toastr, $location){
             });
     };
 });
+
+app.controller('LogoutController', function($scope, $auth, toastr, $location){
+    if (!$auth.isAuthenticated()) { return; }
+
+    $auth.logout().then(function() {
+        toastr.info('You have been logged out');
+        $location.path('/auth/login');
+    });
+});

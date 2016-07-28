@@ -18,13 +18,20 @@ appRoutes.config(['$routeProvider', '$locationProvider', function($routeProvider
                 skipIfLoggedIn: skipIfLoggedIn
             }
         })
+        .when('/logout', {
+            template: null,
+            controller: 'LogoutController',
+            resolve: {
+                loginRequired: loginRequired
+            }
+        })
         .otherwise({ redirectTo: '/' });
 
 
-    function skipIfLoggedIn($q, $auth) {
+    function skipIfLoggedIn($q, $auth, $location) {
         var deferred = $q.defer();
         if ($auth.isAuthenticated()) {
-            deferred.reject();
+            $location.path('/');
         } else {
             deferred.resolve();
         }
