@@ -13,7 +13,7 @@ module.exports = {
             exp: moment().add(0.5, 'days').unix()
         };
 
-        return jwt.encode(payload, secrets.TOKEN_SECRET);
+        return jwt.encode(payLoad, secrets.TOKEN_SECRET);
     },
 
     ensureAuthenticated : function(req, res, next){
@@ -39,7 +39,6 @@ module.exports = {
                 message: "Token has expired"
             });
         }
-
         req.user = payload.sub;
         next();
     }

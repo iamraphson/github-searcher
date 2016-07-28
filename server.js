@@ -1,7 +1,7 @@
 /**
  * Created by Raphson on 7/26/16.
  */
-//require('dotenv').load();
+require('dotenv').load();
 var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
@@ -27,17 +27,19 @@ if(process.env.NODE_ENV === "production"){
     })
 }
 
+//Enable Cross Origin access control
 app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/public"));
+app.use(express.static( __dirname + "/public" ));
 
-/**
- * client end routes
+routes(app);
+/*
+ Config for frontend routes
  */
 app.get('*', function(req, res){
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 /**
