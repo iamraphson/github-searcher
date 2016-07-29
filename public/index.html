@@ -42,6 +42,7 @@
     <script src="js/routes.js"></script>
     <script src="js/controllers/auth.client.controller.js"></script>
     <script src="js/controllers/nav.client.controller.js"></script>
+    <script src="js/controllers/home.client.controller.js"></script>
 </head>
 
 <body>
@@ -58,7 +59,8 @@
                 <a class="navbar-brand" href="/">Github Search</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
-                <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+                <ul ng-if="isAuthenticated()"  class="nav navbar-nav pull-right">
+                    <p class="navbar-text" ng-if="isAuthenticated()">Welcome, {{ currentUser.sub.name }}</p>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div><!--/.nav-collapse -->

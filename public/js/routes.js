@@ -6,7 +6,7 @@ appRoutes.config(['$routeProvider', '$locationProvider', function($routeProvider
     $routeProvider
         .when('/', {
             templateUrl: './views/home.client.view.html',
-            controller: null,
+            controller: 'HomeController',
             resolve: {
                 loginRequired: loginRequired
             }
