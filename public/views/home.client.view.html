@@ -5,10 +5,24 @@
                 <h1 class="text-center">Search For Github Repo</h1>
                 <form onSubmit={this.onSubmit}>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Enter a Repo Name" />
+                        <input type="text" class="form-control" ng-model="repo" placeholder="Enter a Repo Name" />
                     </div>
-                    <button class="btn btn-primary btn-block">Search Repo</button>
+                    <button class="btn btn-primary btn-block" ng-click="search();">Search Repo</button>
                 </form>
+            </div>
+            <spinner name="html5spinner">
+                <div class="overlay"></div>
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div class="please-wait">Please Wait...</div>
+            </spinner>
+            <!--<div>
+                <h3 class="text-center">Results</h3>
+            </div>-->
+            <div ng-if="result">
+                <h3 class="text-center">Results</h3>
             </div>
         </div>
     </div>

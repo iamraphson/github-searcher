@@ -1,7 +1,7 @@
 /**
  * Created by Raphson on 7/27/16.
  */
-var app = angular.module('githubSearch', ['ngRoute', 'ngStorage', 'ngMessages', 'angularMoment',
+var app = angular.module('githubSearch', ['ngRoute', 'ngStorage', 'ngMessages', 'angularMoment', 'angularSpinners',
     'angular-loading-bar', 'ui.bootstrap', 'toastr', 'ngSanitize', 'ngLodash', 'satellizer', 'appRoutes'])
     .config(['cfpLoadingBarProvider', '$httpProvider','$authProvider',
         function(cfpLoadingBarProvider, $httpProvider, $authProvider){

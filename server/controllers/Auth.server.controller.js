@@ -29,6 +29,7 @@ module.exports = {
             request.get(
                 { url: userApiUrl, qs: accessToken, headers: headers, json: true },
                 function(err, response, profile) {
+                    profile.accessToken = accessToken.access_token;
                     var currentUser   = _.pick(profile, 'id', 'name', 'login', 'avatar_url', 'email');
                     return res.send({
                         token: token.createJWT(profile),
