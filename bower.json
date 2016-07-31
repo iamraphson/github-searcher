@@ -42,6 +42,7 @@
     "angular-moment": "^0.10.3",
     "ngstorage": "^0.3.10",
     "satellizer": "^0.15.4",
-    "angularUtils-pagination": "angular-utils-pagination#^0.11.1"
+    "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
+    "angular-spinners": "^3.1.2"
   }
 }
