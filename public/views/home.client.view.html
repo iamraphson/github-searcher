@@ -1,3 +1,5 @@
+<!-- Inject Navigation view here -->
+<div data-ng-include data-src="'../nav.html'"></div>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -27,7 +29,7 @@
             <!--<div>
                 <h3 class="text-center">Results</h3>
             </div>-->
-            <div ng-if="result" class="here">
+            <div ng-if="result">
                 <div ng-show="total_count != 0">
                     <h3 class="text-center">Results</h3>
                     <ul class="list-group">
