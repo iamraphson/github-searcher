@@ -16,15 +16,10 @@ var app = express();
  Express Configuration
  */
 if(process.env.NODE_ENV === "production"){
-    app.enable('trust proxy');
-    app.use(function(req, res, next){
-        if(req.secure){
-            //Request was Via Secure HTTP protocol
-            next();
-        } else {
-            res.direct('https://' + req.headers.host + req.url);
-        }
-    })
+    app.use(function(req, res, next) {
+        var protocol = req.get('x-forwarded-proto');
+        protocol == 'https' ? next() : res.redirect('https://' + req.hostname + req.url);
+    });
 }
 
 //Enable Cross Origin access control

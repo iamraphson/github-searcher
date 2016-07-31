@@ -16,7 +16,16 @@ module.exports = {
                 return res.status(500).json({message: err.message});
             return res.status(200).json({success: true, repos: response});
         });
-    }
+    },
+
+    /**
+     * Get All repo contributor
+     * @param req
+     * @param res
+     */
+    getRepoContributors: function(req, res){
+        var github = authForGitApi(req);
+    },
 };
 
 var authForGitApi = function(req){

@@ -11,6 +11,13 @@ appRoutes.config(['$routeProvider', '$locationProvider', function($routeProvider
                 loginRequired: loginRequired
             }
         })
+        .when('/repo', {
+            templateUrl: './views/contributor.client.view.html',
+            controller: null,
+            resolve: {
+                loginRequired: loginRequired
+            }
+        })
         .when('/auth/login', {
             templateUrl: './views/login.client.view.html',
             controller: 'AuthController',

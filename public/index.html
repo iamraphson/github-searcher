@@ -64,6 +64,9 @@
                 </button>
                 <a class="navbar-brand" href="/">Github Search</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/repo">Search</a></li>
+            </ul>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul ng-if="isAuthenticated()"  class="nav navbar-nav pull-right">
                     <p class="navbar-text" ng-if="isAuthenticated()">Welcome, {{ currentUser.sub.name }}</p>
