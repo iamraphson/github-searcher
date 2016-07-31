@@ -53,6 +53,9 @@
 .repo-description {
     color: #8B8B8B;
 }
+.no-result {
+    margin-top:130px;
+}
 .repo-params {
     line-height: 1.42857;
 }
