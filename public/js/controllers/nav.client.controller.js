@@ -4,6 +4,8 @@
 app.controller('NavbarCtrl', function($scope, $auth, $rootScope){
     if($auth.isAuthenticated()){
         $rootScope.currentUser = $auth.getPayload();
+        console.log($rootScope.currentUser)
+        console.log($rootScope)
     }
 
     $scope.isAuthenticated = function(){
