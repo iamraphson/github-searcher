@@ -3,11 +3,17 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="search-form">
                 <h1 class="text-center">Search For Github Repo</h1>
-                <form onSubmit={this.onSubmit}>
+                <form name="searchForm">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="repo" placeholder="Enter a Repo Name" />
+                        <input type="text" class="form-control" id="reponame" name="reponame"
+                               ng-model="repo" placeholder="Enter a Repo Name" />
+                        <div class="help-block text-danger"
+                             ng-if="searchForm.reponame.$dirty" ng-messages="searchForm.reponame.$error">
+                            <div ng-message="required" class="has-error">Repository name is required.</div>
+                        </div>
                     </div>
-                    <button class="btn btn-primary btn-block" ng-click="search();">Search Repo</button>
+                    <button class="btn btn-primary btn-block" ng-disabled="searchForm.$invalid"
+                            ng-click="search();">Search Repo</button>
                 </form>
             </div>
             <spinner name="html5spinner">
@@ -23,6 +29,42 @@
             </div>-->
             <div ng-if="result">
                 <h3 class="text-center">Results</h3>
+                <ul class="list-group">
+                    <li class="list-group-item repo-item" total-items="total_count"
+                        dir-paginate="gitRepo in gitSearchResponse|itemsPerPage:itemsPerPage" >
+                        <div>
+                            <h3 class="repo-title"><a href="#">{{ gitRepo.name }}</a></h3>
+                            <p class="repo-description">
+                                <span ng-show="gitRepo.description != ''">{{ gitRepo.description }}</span>
+                                <span ng-hide="gitRepo.description != ''"><i>No Description</i></span>
+                            </p>
+                            <div class="row repo-params">
+                                <div class="col-md-2">
+                                    Fork: <b>{{gitRepo.forks_count}}</b>
+                                </div>
+                                <div class="col-md-2">
+                                    Star: <b>{{gitRepo.stargazers_count}}</b>
+                                </div>
+                                <div class="col-md-3">
+                                    Language: <b>{{gitRepo.language}}</b>
+                                </div>
+                                <div class="col-md-2">
+                                    Watchers: <b>{{gitRepo.watchers_count}}</b>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-primary"
+                                       target="_blank" ng-href={{gitRepo.html_url}}>View on Github</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <dir-pagination-controls
+                        max-size="10"
+                        direction-links="true"
+                        boundary-links="true"
+                        on-page-change="getResultsPage(newPageNumber)" >
+                </dir-pagination-controls>
             </div>
         </div>
     </div>

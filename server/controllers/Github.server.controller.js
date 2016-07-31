@@ -5,8 +5,12 @@ var GitHubApi = require('github');
 module.exports = {
     searchRepo: function(req, res){
         var github = authForGitApi(req);
+        console.log(req.params.itemPerPage);
+        console.log(req.params.pageno);
         github.search.repos({
-            q : req.params.search_word
+            q : req.params.search_word,
+            per_page: req.params.itemPerPage,
+            page: req.params.pageno
         }, function(err, response) {
             if(err)
                 return res.status(500).json({message: err.message});

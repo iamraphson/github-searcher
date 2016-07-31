@@ -3,8 +3,8 @@
  */
 app.factory('gitHubService', function($http){
     return {
-        searchRepo: function (searchWord) {
-            return $http.get('/api/search/' + searchWord);
+        searchRepo: function (searchWord, itemPerPage, pageNumber) {
+            return $http.get('/api/search/' + searchWord + '/' + itemPerPage + '/' + pageNumber);
         }
     }
 });

@@ -43,3 +43,22 @@
           -webkit-transform: scale(1.0);
       }
 }
+
+.repo-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #565656;
+    text-transform: uppercase;
+}
+.repo-description {
+    color: #8B8B8B;
+}
+.repo-params {
+    line-height: 1.42857;
+}
+.repo-item{
+    /*margin-bottom: 20px !important;*/
+}
+.repo-item:last-child{
+    margin-bottom: 0px;
+}
