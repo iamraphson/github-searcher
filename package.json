@@ -20,6 +20,9 @@
     "search",
     "API"
   ],
+  "engines": {
+    "node": "0.10.x"
+  },
   "author": "Ayeni Olusegun <nsegun5@gmail.com>",
   "license": "MIT",
   "bugs": {
