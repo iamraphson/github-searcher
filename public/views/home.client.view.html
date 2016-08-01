@@ -36,7 +36,9 @@
                         <li class="list-group-item repo-item" total-items="total_count"
                             dir-paginate="gitRepo in gitSearchResponse.items|itemsPerPage:itemsPerPage" >
                             <div>
-                                <h3 class="repo-title"><a href="#">{{ gitRepo.name }}</a></h3>
+                                <h3 class="repo-title">
+                                    <a href="/repo/{{ gitRepo.full_name }}">{{ gitRepo.name }}</a>
+                                </h3>
                                 <p class="repo-description">
                                     <span ng-show="gitRepo.description != ''">{{ gitRepo.description }}</span>
                                     <span ng-hide="gitRepo.description != ''"><i>No Description</i></span>

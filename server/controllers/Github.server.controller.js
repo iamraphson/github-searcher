@@ -3,6 +3,12 @@
  */
 var GitHubApi = require('github');
 module.exports = {
+
+    /**
+     * Search repositories.
+     * @param req
+     * @param res
+     */
     searchRepo: function(req, res){
         var github = authForGitApi(req);
         console.log(req.params.itemPerPage);
@@ -19,12 +25,23 @@ module.exports = {
     },
 
     /**
-     * Get All repo contributor
+     *Get contributors for the specified repository.
      * @param req
      * @param res
      */
     getRepoContributors: function(req, res){
         var github = authForGitApi(req);
+        github.repos.getContributors({
+            user: req.params.repoOwner,
+            repo: req.params.repoName,
+            anon: false,
+            per_page: req.params.itemPerPage,
+            page: req.params.pageno
+        }, function(err, response){
+            if(err)
+                return res.status(500).json({message: err.message});
+            return res.status(200).json({success: true, contributors: response});
+        });
     },
 };
 

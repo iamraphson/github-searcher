@@ -3,19 +3,55 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="col-md-3">
-                <article class="card-user box-typical">
-                    <div class="card-user-photo">
-                        <img src="img/photo-184-1.jpg" alt="">
+
+            <spinner name="html5spinner1"  on-loaded="getResultsPage(1)">
+                <div class="overlay"></div>
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div class="please-wait">Please Wait...</div>
+            </spinner>
+
+            <div ng-if="result">
+                <div>
+                    <div class="col-md-3"
+                         dir-paginate="repoContributors in repoContributorResponse|itemsPerPage:itemsPerPage">
+                        <article class="card-user box-typical">
+                            <div class="card-user-photo">
+                                <img ng-src="{{ repoContributors.avatar_url }}" alt="{{ repoContributors.login }}">
+                            </div>
+                            <div class="card-user-name">{{ repoContributors.login }}</div>
+                            <div class="card-user-status"><i>No Location</i></div>
+                            <div class="card-user-social">
+                                <a href="{{ repoContributors.html_url }}"
+                                   class="contributorGitLink" target="_blank">
+                                    <i class="fa fa-github-square" style=""></i>
+                                </a>
+                            </div>
+                        </article><!--.card-user-->
                     </div>
-                    <div class="card-user-name">Douglas Diaz</div>
-                    <div class="card-user-status">in disqussion</div>
-                    <div class="card-user-social">
-                        <a href="#">
-                            <i class="fa fa-github" style=""></i>
-                        </a>
-                    </div>
-                </article><!--.card-user-->
+                </div>
+                <dir-pagination-controls
+                        max-size="60"
+                        direction-links="true"
+                        boundary-links="true"
+                        on-page-change="getResultsPage(newPageNumber)" >
+                </dir-pagination-controls>
+                <!--<div class="col-md-3">
+                    <article class="card-user box-typical">
+                        <div class="card-user-photo">
+                            <img src="img/photo-184-1.jpg" alt="">
+                        </div>
+                        <div class="card-user-name">Douglas Diaz</div>
+                        <div class="card-user-status">in disqussion</div>
+                        <div class="card-user-social">
+                            <a href="#" class="contributorGitLink" target="_blank">
+                                <i class="fa fa-github-square" style=""></i>
+                            </a>
+                        </div>
+                    </article>&lt;!&ndash;.card-user&ndash;&gt;
+                </div>-->
             </div>
         </div>
     </div>

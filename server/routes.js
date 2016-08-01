@@ -5,4 +5,6 @@ module.exports = function(app){
     app.post('/auth/github', authCtrl.authGithub);
 
     app.get('/api/search/:search_word/:itemPerPage/:pageno', token.ensureAuthenticated, gitHubCtrl.searchRepo);
+    app.get('/api/repo/:repoOwner/:repoName/:itemPerPage/:pageno', token.ensureAuthenticated,
+        gitHubCtrl.getRepoContributors);
 };

@@ -22,6 +22,7 @@ app.controller('HomeController', function($scope, $auth, spinnerService, gitHubS
                 if($scope.gitSearchResponse.total_count > 1000)
                     $scope.total_count = 1000;
 
+                //console.log($scope.gitSearchResponse);
             })
             .catch(function(response){
                 toastr.error(response.data.message, response.status);

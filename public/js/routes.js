@@ -11,9 +11,9 @@ appRoutes.config(['$routeProvider', '$locationProvider', function($routeProvider
                 loginRequired: loginRequired
             }
         })
-        .when('/repo', {
+        .when('/repo/:repoOwner/:repoName', {
             templateUrl: './views/contributor.client.view.html',
-            controller: null,
+            controller: 'ContributorController',
             resolve: {
                 loginRequired: loginRequired
             }

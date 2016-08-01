@@ -88,3 +88,12 @@
     border: 1px solid #d8e2e7;
     margin: 0 0 20px;
 }
+.card-user .card-user-photo img {
+    display: block;
+    width: 100%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.contributorGitLink {
+    font-size: 1.6em;
+}
