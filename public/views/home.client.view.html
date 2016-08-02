@@ -14,7 +14,7 @@
                             <div ng-message="required" class="has-error text-danger">Repository name is required.</div>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-block" ng-disabled="searchForm.$invalid"
+                    <button class="btn btn-primary btn-block" ng-disabled="searchForm.$invalid || disabled"
                             ng-click="search();">Search Repo</button>
                 </form>
             </div>

@@ -9,6 +9,7 @@ app.controller('HomeController', function($scope, $auth, spinnerService, gitHubS
     $scope.itemsPerPage = 10; //this could be a dynamic value from a drop down
     $scope.search = function(){
         $scope.result = false;
+        $scope.disabled = true;
         $scope.getResultsPage($scope.pageno);
     };
     $scope.getResultsPage = function(pageno) {
@@ -31,6 +32,7 @@ app.controller('HomeController', function($scope, $auth, spinnerService, gitHubS
                 // Hide loading spinner whether our call succeeded or failed.
                 spinnerService.hide('html5spinner');
                 $scope.result = true;
+                $scope.disabled = false;
             });
     }
 });
