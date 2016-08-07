@@ -2,6 +2,7 @@
  * Created by Raphson on 7/30/16.
  */
 var GitHubApi = require('github');
+var async = require("async");
 var mongoCache = require('../utils/CacheConfig');
 var secrets = require('../../config/secrets');
 module.exports = {
@@ -40,8 +41,28 @@ module.exports = {
             } else {*/
                 console.log("from GithubAPI System");
                 getContributorFromGit(req, function(status, data){
-                    async.eachSeries(data.contributors,function(contributor, callback){
-                        console.log(contributor);
+                    async.eachSeries(data,function(contributor, callback){
+                        async.waterfall([
+                            function(callback) {
+                                authForGitApi(req).users.getForUser({
+                                    user: contributor.login
+                                }, function(err, response){
+                                    if(err){
+                                        console.log("Some error i think-> " + err.message);
+                                        callback(true);
+                                    }
+                                    callback(null,response,contributor.id + "->" + contributor.login);
+                                });
+                            },
+                            function(githubResponse,githubId,callback) {
+                                console.log(githubId);
+                                callback();
+                            }],function(){
+                                callback();
+                            }
+                        );
+                        //console.log(contributor.login);
+                        //callback();
                     },function(){
                         console.log("I am done");
                     });
