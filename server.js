@@ -6,10 +6,15 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
+    database = require('./config/database'),
     routes = require('./server/routes');
 
 //setup application port
 var port = process.env.PORT || 3000;
+/**
+ * Connect to MongoDB.
+ */
+database.dbconnect();
 
 var app = express();
 /**

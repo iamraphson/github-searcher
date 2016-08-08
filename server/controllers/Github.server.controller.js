@@ -5,6 +5,7 @@ var GitHubApi = require('github');
 var async = require("async");
 var mongoCache = require('../utils/CacheConfig');
 var secrets = require('../../config/secrets');
+var Contributor = require('../model/contributor.server.model');
 module.exports = {
 
     /**
@@ -41,36 +42,66 @@ module.exports = {
             } else {*/
                 console.log("from GithubAPI System");
                 getContributorFromGit(req, function(status, data){
-                    async.eachSeries(data,function(contributor, callback){
-                        async.waterfall([
-                            function(callback) {
-                                authForGitApi(req).users.getForUser({
-                                    user: contributor.login
-                                }, function(err, response){
-                                    if(err){
-                                        console.log("Some error i think-> " + err.message);
-                                        callback(true);
-                                    }
-                                    callback(null,response,contributor.id + "->" + contributor.login);
-                                });
-                            },
-                            function(githubResponse,githubId,callback) {
-                                console.log(githubId);
-                                callback();
-                            }],function(){
-                                callback();
-                            }
-                        );
-                        //console.log(contributor.login);
-                        //callback();
-                    },function(){
-                        console.log("I am done");
-                    });
+                    if(status){
+                        var index = 0;
+                        async.eachSeries(data,function(contributor, callback){
+                            Contributor.find({contributor_id: contributor.id}, function(err, userContributor) {
+                                if(userContributor.length > 0){
+                                    index = data.findIndex(x => x.id === userContributor[0].contributor_id);
+                                    console.log(userContributor);
+                                    //data[index].user = userContributor[0];
+                                    console.log("We got data");
+                                } else {
+                                    async.waterfall([
+                                            function(callback) {
+                                                authForGitApi(req).users.getForUser({
+                                                    user: contributor.login
+                                                }, function(err, response){
+                                                    if(err){
+                                                        console.log("Some error i think-> " + err.message);
+                                                        callback(true);
+                                                    }
+                                                    callback(null,response,contributor.id + "->" + contributor.login);
+                                                });
+                                            },
+                                            function(githubResponse,githubId,callback) {
+                                                var contributorData = {
+                                                    contributor_id: githubResponse.id,
+                                                    contributor_username: githubResponse.login,
+                                                    contributor_name: githubResponse.name,
+                                                    contributor_email: githubResponse.email,
+                                                    contributor_location: githubResponse.location
+                                                };
+                                                // create a new Data
+                                                var newData = Contributor(contributorData);
+                                                newData.save(function(err) {
+                                                    if (err) console.log(err);
+                                                });
 
-                    if(status)
-                        return res.status(200).json({success: true, contributors: data});
-                    else
+                                                index = data.findIndex(x => x.id === githubResponse.id);
+                                                data[index].user = contributorData;
+                                                //console.log(data[index]);
+                                                callback();
+                                            }],function(){
+                                                callback();
+                                        }
+                                    );
+                                    //console.log("No data");
+                                }
+                            });
+                            //console.log(contributor.login);
+                            //callback();
+                            },function(){
+                                //console.log(data);
+                                mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
+                                    data, secrets.CACHE_TIMEOUT);
+                                return res.status(200).json({success: true, contributors: data});
+                            });
+                        //console.log("server return");
+                        //return res.status(200).json({success: true, contributors: data});
+                    } else {
                         return res.status(500).json({message: data.message});
+                    }
                 });
             //}
         });
@@ -78,7 +109,6 @@ module.exports = {
 };
 
 var getContributorFromGit = function(req, cb){
-
     authForGitApi(req).repos.getContributors({
         user: req.params.repoOwner,
         repo: req.params.repoName,
@@ -89,8 +119,7 @@ var getContributorFromGit = function(req, cb){
         if(err)
             cb(false, err);
 
-        mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
-            response, secrets.CACHE_TIMEOUT);
+
         cb(true, response);
     });
 };
