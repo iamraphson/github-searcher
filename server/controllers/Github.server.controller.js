@@ -95,8 +95,8 @@ module.exports = {
                             //callback();
                             },function(){
                                 console.log("output");
-                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data), {ttl: 86400},
-                                    function(err){
+                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
+                                    {ttl: secrets.CACHE_TIMEOUT}, function(err){
                                         //console.log(err);
                                     });
                                 return res.status(200).json({success: true, contributors: data});
