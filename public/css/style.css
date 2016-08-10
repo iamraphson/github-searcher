@@ -99,5 +99,6 @@
     font-size: 1.6em;
 }
 .card-user-status {
+    margin-bottom: 10px;
     text-wrap: normal;
 }

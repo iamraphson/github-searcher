@@ -35,6 +35,7 @@ module.exports = {
     getRepoContributors: function(req, res){
         var repoOwner = req.params.repoOwner;
         var repoName = req.params.repoName;
+        //console.log()
         checkCacheForRepoData(repoOwner + '/' + repoName, function(result){
             if(result != null){
                 console.log("from Cache System");
@@ -48,17 +49,10 @@ module.exports = {
                             Contributor.find({contributor_id: contributor.id}, function(err, userContributor) {
                                 if(userContributor.length > 0){
                                     console.log("local server");
-                                    async.waterfall([
-                                        function(callback) {
-                                            index = data.
-                                                findIndex(x => x.id == userContributor[0].contributor_id);
-                                            data[index].user = userContributor[0];
-                                            console.log(userContributor[0].contributor_id);
-                                            callback();
-                                        }
-                                    ], function(){
-                                        callback();
-                                    });
+                                    index = data.
+                                        findIndex(x => x.id == userContributor[0].contributor_id);
+                                    data[index].user = userContributor[0];
+                                    callback();
                                 } else {
                                     console.log("Git server");
                                     async.waterfall([
@@ -89,7 +83,6 @@ module.exports = {
 
                                                 index = data.findIndex(x => x.id === githubResponse.id);
                                                 data[index].user = contributorData;
-                                                console.log(githubId);
                                                 callback();
                                             }],function(){
                                                 callback();
@@ -102,10 +95,9 @@ module.exports = {
                             //callback();
                             },function(){
                                 console.log("output");
-                                console.log(data.length);
-                                mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
-                                    JSON.stringify(data), secrets.CACHE_TIMEOUT, function(err){
-                                        console.log(err);
+                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data), {ttl: 86400},
+                                    function(err){
+                                        //console.log(err);
                                     });
                                 return res.status(200).json({success: true, contributors: data});
                             });
