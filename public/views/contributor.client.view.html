@@ -19,11 +19,21 @@
                          dir-paginate="repoContributors in repoContributorResponse|itemsPerPage:itemsPerPage">
                         <article class="card-user box-typical">
                             <div class="card-user-photo">
-                                <img ng-src="{{ repoContributors.avatar_url }}" alt="{{ repoContributors.login }}">
+                                <img ng-src="{{ repoContributors.avatar_url }}"
+                                     alt="{{ repoContributors.login }}">
                             </div>
                             <div class="card-user-name">{{ repoContributors.login }}</div>
-                            <div class="card-user-status"><i>No Location</i></div>
-                            <div class="card-user-status"><i>No email</i></div>
+                            <div class="card-user-status"><i>
+                                <span ng-show="repoContributors.user.contributor_location != null">
+                                    {{ repoContributors.user.contributor_location }}</span>
+                                <span ng-show="repoContributors.user.contributor_location == null">
+                                    <i>No Location</i></span>
+                            </i></div>
+                            <div class="card-user-status">
+                                <span ng-show="repoContributors.user.contributor_email != null">
+                                    {{ repoContributors.user.contributor_email }}</span>
+                                <span ng-show="repoContributors.user.contributor_email == null">
+                                    <i>No Email</i></span></div>
                             <div class="card-user-social">
                                 <a href="{{ repoContributors.html_url }}"
                                    class="contributorGitLink" target="_blank">

@@ -102,8 +102,11 @@ module.exports = {
                             //callback();
                             },function(){
                                 console.log("output");
+                                console.log(data.length);
                                 mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
-                                    data, secrets.CACHE_TIMEOUT);
+                                    JSON.stringify(data), secrets.CACHE_TIMEOUT, function(err){
+                                        console.log(err);
+                                    });
                                 return res.status(200).json({success: true, contributors: data});
                             });
                     } else {
@@ -142,7 +145,7 @@ var checkCacheForRepoData = function(key, cb){
             console.log(err);
             return cb(null);
         }
-        return cb(result);
+        return cb(JSON.parse(result));
 
     });
 };
