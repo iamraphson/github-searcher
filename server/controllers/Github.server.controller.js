@@ -36,10 +36,10 @@ module.exports = {
         var repoOwner = req.params.repoOwner;
         var repoName = req.params.repoName;
         checkCacheForRepoData(repoOwner + '/' + repoName, function(result){
-            /*if(result != null){
+            if(result != null){
                 console.log("from Cache System");
                 return res.status(200).json({success: true, contributors: result});
-            } else {*/
+            } else {
                 console.log("from GithubAPI System");
                 getContributorFromGit(req, function(status, data){
                     if(status){
@@ -47,11 +47,20 @@ module.exports = {
                         async.eachSeries(data,function(contributor, callback){
                             Contributor.find({contributor_id: contributor.id}, function(err, userContributor) {
                                 if(userContributor.length > 0){
-                                    index = data.findIndex(x => x.id === userContributor[0].contributor_id);
-                                    console.log(userContributor);
-                                    //data[index].user = userContributor[0];
-                                    console.log("We got data");
+                                    console.log("local server");
+                                    async.waterfall([
+                                        function(callback) {
+                                            index = data.
+                                                findIndex(x => x.id == userContributor[0].contributor_id);
+                                            data[index].user = userContributor[0];
+                                            console.log(userContributor[0].contributor_id);
+                                            callback();
+                                        }
+                                    ], function(){
+                                        callback();
+                                    });
                                 } else {
+                                    console.log("Git server");
                                     async.waterfall([
                                             function(callback) {
                                                 authForGitApi(req).users.getForUser({
@@ -80,7 +89,7 @@ module.exports = {
 
                                                 index = data.findIndex(x => x.id === githubResponse.id);
                                                 data[index].user = contributorData;
-                                                //console.log(data[index]);
+                                                console.log(githubId);
                                                 callback();
                                             }],function(){
                                                 callback();
@@ -92,18 +101,16 @@ module.exports = {
                             //console.log(contributor.login);
                             //callback();
                             },function(){
-                                //console.log(data);
+                                console.log("output");
                                 mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
                                     data, secrets.CACHE_TIMEOUT);
                                 return res.status(200).json({success: true, contributors: data});
                             });
-                        //console.log("server return");
-                        //return res.status(200).json({success: true, contributors: data});
                     } else {
                         return res.status(500).json({message: data.message});
                     }
                 });
-            //}
+            }
         });
     }
 };
