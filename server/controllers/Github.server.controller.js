@@ -28,14 +28,13 @@ module.exports = {
     },
 
     /**
-     *Get contributors for the specified repository.
+     * Get contributors for the specified repository.
      * @param req
      * @param res
      */
     getRepoContributors: function(req, res){
         var repoOwner = req.params.repoOwner;
         var repoName = req.params.repoName;
-        //console.log()
         checkCacheForRepoData(repoOwner + '/' + repoName, function(result){
             if(result != null){
                 console.log("from Cache System");

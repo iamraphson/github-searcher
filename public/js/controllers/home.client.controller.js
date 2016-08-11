@@ -8,8 +8,8 @@ app.controller('HomeController', function($scope, $auth, spinnerService, gitHubS
     $scope.total_count = 0;
     $scope.itemsPerPage = 10; //this could be a dynamic value from a drop down
     $scope.search = function(){
-        $scope.result = false;
         $scope.disabled = true;
+        $scope.result = false;
         $scope.getResultsPage($scope.pageno);
     };
     $scope.getResultsPage = function(pageno) {
