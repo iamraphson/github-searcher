@@ -3,6 +3,7 @@
  */
 var GitHubApi = require('github');
 var async = require("async");
+var _ = require('lodash');
 var mongoCache = require('../utils/CacheConfig');
 var secrets = require('../../config/secrets');
 var Contributor = require('../model/contributor.server.model');
@@ -47,13 +48,12 @@ module.exports = {
                         async.eachSeries(data,function(contributor, callback){
                             Contributor.find({contributor_id: contributor.id}, function(err, userContributor) {
                                 if(userContributor.length > 0){
-                                    console.log("local server");
-                                    index = data.
-                                        findIndex(x => x.id == userContributor[0].contributor_id);
+                                    console.log("Getting user info from local mongodb!!");
+                                    index = findIndexInData(data, userContributor[0].contributor_id);
                                     data[index].user = userContributor[0];
                                     callback();
                                 } else {
-                                    console.log("Git server");
+                                    console.log("Getting user info from git server!!");
                                     async.waterfall([
                                             function(callback) {
                                                 authForGitApi(req).users.getForUser({
@@ -79,19 +79,15 @@ module.exports = {
                                                 newData.save(function(err) {
                                                     if (err) console.log(err);
                                                 });
-
-                                                index = data.findIndex(x => x.id === githubResponse.id);
+                                                index = findIndexInData(data, githubResponse.id);
                                                 data[index].user = contributorData;
                                                 callback();
                                             }],function(){
                                                 callback();
                                         }
                                     );
-                                    //console.log("No data");
                                 }
                             });
-                            //console.log(contributor.login);
-                            //callback();
                             },function(){
                                 console.log("output");
                                 mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
@@ -145,4 +141,15 @@ var authForGitApi = function(req){
     var github = new GitHubApi({debug: false});
     github.authenticate({ type: "oauth", token: req.user.accessToken });
     return github;
+};
+
+var findIndexInData = function(data, value) {
+    var result = -1;
+    data.some(function (item, i) {
+        if (item.id == value) {
+            result = i;
+            return true;
+        }
+    });
+    return result;
 };
