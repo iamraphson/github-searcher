@@ -14,6 +14,7 @@ app.controller('HomeController', function($scope, $auth, spinnerService, gitHubS
     };
     $scope.getResultsPage = function(pageno) {
         spinnerService.show('html5spinner');
+        $scope.gitSearchResponse = []
         gitHubService.searchRepo($scope.repo, $scope.itemsPerPage, pageno)
             .then(function(response){
                 $scope.gitSearchResponse = response.data.repos;
