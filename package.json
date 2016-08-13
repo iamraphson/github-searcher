@@ -4,7 +4,7 @@
   "description": "github contributors to a repo search application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/jshint/bin/jshint hello.js",
     "start": "node server.js",
     "postinstall": "bower cache clean && bower install"
   },
@@ -52,6 +52,7 @@
     "bower": "^1.7.9",
     "browserify": "^13.1.0",
     "gulp": "^3.9.1",
+    "jshint": "^2.9.2",
     "vinyl-source-stream": "^1.1.0"
   }
 }
