@@ -3,6 +3,7 @@
  */
 var GitHubApi = require('github');
 var async = require("async");
+var _ = require('lodash');
 var mongoCache = require('../utils/CacheConfig');
 var secrets = require('../../config/secrets');
 var Contributor = require('../model/contributor.server.model');
@@ -28,7 +29,7 @@ module.exports = {
     },
 
     /**
-     *Get contributors for the specified repository.
+     * Get contributors for the specified repository.
      * @param req
      * @param res
      */
@@ -47,20 +48,12 @@ module.exports = {
                         async.eachSeries(data,function(contributor, callback){
                             Contributor.find({contributor_id: contributor.id}, function(err, userContributor) {
                                 if(userContributor.length > 0){
-                                    console.log("local server");
-                                    async.waterfall([
-                                        function(callback) {
-                                            index = data.
-                                                findIndex(x => x.id == userContributor[0].contributor_id);
-                                            data[index].user = userContributor[0];
-                                            console.log(userContributor[0].contributor_id);
-                                            callback();
-                                        }
-                                    ], function(){
-                                        callback();
-                                    });
+                                    console.log("Getting user info from local mongodb!!");
+                                    index = findIndexInData(data, userContributor[0].contributor_id);
+                                    data[index].user = userContributor[0];
+                                    callback();
                                 } else {
-                                    console.log("Git server");
+                                    console.log("Getting user info from git server!!");
                                     async.waterfall([
                                             function(callback) {
                                                 authForGitApi(req).users.getForUser({
@@ -86,24 +79,21 @@ module.exports = {
                                                 newData.save(function(err) {
                                                     if (err) console.log(err);
                                                 });
-
-                                                index = data.findIndex(x => x.id === githubResponse.id);
+                                                index = findIndexInData(data, githubResponse.id);
                                                 data[index].user = contributorData;
-                                                console.log(githubId);
                                                 callback();
                                             }],function(){
                                                 callback();
                                         }
                                     );
-                                    //console.log("No data");
                                 }
                             });
-                            //console.log(contributor.login);
-                            //callback();
                             },function(){
                                 console.log("output");
-                                mongoCache.set(req.params.repoOwner + '/' + req.params.repoName,
-                                    data, secrets.CACHE_TIMEOUT);
+                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
+                                    {ttl: secrets.CACHE_TIMEOUT}, function(err){
+                                        //console.log(err);
+                                    });
                                 return res.status(200).json({success: true, contributors: data});
                             });
                     } else {
@@ -142,7 +132,7 @@ var checkCacheForRepoData = function(key, cb){
             console.log(err);
             return cb(null);
         }
-        return cb(result);
+        return cb(JSON.parse(result));
 
     });
 };
@@ -151,4 +141,15 @@ var authForGitApi = function(req){
     var github = new GitHubApi({debug: false});
     github.authenticate({ type: "oauth", token: req.user.accessToken });
     return github;
+};
+
+var findIndexInData = function(data, value) {
+    var result = -1;
+    data.some(function (item, i) {
+        if (item.id == value) {
+            result = i;
+            return true;
+        }
+    });
+    return result;
 };

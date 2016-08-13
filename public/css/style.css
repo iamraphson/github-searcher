@@ -87,6 +87,7 @@
     background: #fff;
     border: 1px solid #d8e2e7;
     margin: 0 0 20px;
+    min-height: 285px;
 }
 .card-user .card-user-photo img {
     display: block;
@@ -96,4 +97,8 @@
 }
 .contributorGitLink {
     font-size: 1.6em;
+}
+.card-user-status {
+    margin-bottom: 10px;
+    text-wrap: normal;
 }
