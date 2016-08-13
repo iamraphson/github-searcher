@@ -1,4 +1,4 @@
-# github-searcher
+# github-searcher [![Build Status](https://travis-ci.org/iamraphson/github-searcher.svg)] (https://travis-ci.org/iamraphson/github-searcher)
 
 This application was bulit in MEAN(mongoDB ExpressJS AngularJS NodeJS).You would log in with Github API and search for repos.For a given repo show the contributors but also show where each contributor is from and their email address, if available
 
