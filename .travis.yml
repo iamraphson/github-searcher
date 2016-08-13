@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '0.12'
+  - '5.5'
+  - '6.0.0'
+  - '6.2.2'
+script: 'make test-travis'
+branches:
+  only:
+    - master
+
+notifications:
+   slack: red-creek:bXLrIwXudNv0Jpi7pDtvjmNM
