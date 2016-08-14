@@ -13,7 +13,7 @@ var app = angular.module('githubSearch', ['ngRoute', 'ngStorage', 'ngMessages', 
         $authProvider.storageType = 'localStorage';
 
         $authProvider.github({
-            clientId: 'ee56a3907763f5966ebf'
+            clientId: '19bf78ad112be0318698'
         });
 
         // GitHub
