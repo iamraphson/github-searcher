@@ -92,10 +92,10 @@ module.exports = {
                             });
                             },function(){
                                 console.log("output");
-                                /*mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
+                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
                                     {ttl: secrets.CACHE_TIMEOUT}, function(err){
-                                        //console.log(err);
-                                    });*/
+                                        console.log(err);
+                                    });
                                 return res.status(200).json({success: true, contributors: data});
                             });
                     } else {

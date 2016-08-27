@@ -23,6 +23,4 @@ app.controller('ContributorController', function($scope, $routeParams, $auth,
                 $scope.result = true;
             });
     };
-
-    //$scope.getResultsPage($scope.pageno);
 });
