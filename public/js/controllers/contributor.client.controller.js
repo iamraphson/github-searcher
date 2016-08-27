@@ -8,7 +8,7 @@ app.controller('ContributorController', function($scope, $routeParams, $auth,
     $scope.repoContributorResponse = []; //Declare an empty array
     $scope.pageno = 1; // initialize page no to 1
     $scope.total_count = 0;
-    $scope.itemsPerPage = 500; //this could be a dynamic value from a drop down
+    $scope.itemsPerPage = 200; //this could be a dynamic value from a drop down
 
     $scope.getResultsPage = function(pageno) {
         spinnerService.show('html5spinner1');

@@ -36,6 +36,7 @@ module.exports = {
     getRepoContributors: function(req, res){
         var repoOwner = req.params.repoOwner;
         var repoName = req.params.repoName;
+        getTotalContributor(req);
         checkCacheForRepoData(repoOwner + '/' + repoName, function(result){
             if(result != null){
                 console.log("from Cache System");
@@ -43,6 +44,7 @@ module.exports = {
             } else {
                 console.log("from GithubAPI System");
                 getContributorFromGit(req, function(status, data){
+                    //console.log(data.length);
                     if(status){
                         var index = 0;
                         async.eachSeries(data,function(contributor, callback){
@@ -90,10 +92,10 @@ module.exports = {
                             });
                             },function(){
                                 console.log("output");
-                                mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
+                                /*mongoCache.set(repoOwner + '/' + repoName, JSON.stringify(data),
                                     {ttl: secrets.CACHE_TIMEOUT}, function(err){
                                         //console.log(err);
-                                    });
+                                    });*/
                                 return res.status(200).json({success: true, contributors: data});
                             });
                     } else {
@@ -106,19 +108,35 @@ module.exports = {
 };
 
 var getContributorFromGit = function(req, cb){
-    authForGitApi(req).repos.getContributors({
-        user: req.params.repoOwner,
-        repo: req.params.repoName,
-        anon: false,
-        per_page: req.params.itemPerPage,
-        page: req.params.pageno
-    }, function(err, response){
-        if(err)
-            cb(false, err);
+    var pageNum = 1;
+    var contributor = [];
 
-
-        cb(true, response);
-    });
+    (function loop() {
+        authForGitApi(req).repos.getContributors({
+            user: req.params.repoOwner,
+            repo: req.params.repoName,
+            anon: false,
+            per_page: 100,
+            page: pageNum
+        }, function(err, response){
+            /*console.log(err);
+            console.log("page num-> " + pageNum +" while response count-> " + response.length);*/
+            if(err){
+                cb(false, contributor);
+            }
+            async.eachSeries(response,function(userContributor, callback){
+                contributor.push(userContributor);
+                callback();
+            });
+            if(response.length != 0){
+                pageNum++;
+                loop();
+            } else {
+                console.log("total count -> " + contributor.length);
+                cb(true, contributor);
+            }
+        });
+    }());
 };
 
 /**
@@ -141,6 +159,15 @@ var authForGitApi = function(req){
     var github = new GitHubApi({debug: false});
     github.authenticate({ type: "oauth", token: req.user.accessToken });
     return github;
+};
+
+var getTotalContributor = function(req){
+    authForGitApi(req).repos.getStatsContributors({
+        user: req.params.repoOwner,
+        repo: req.params.repoName,
+    }, function(err, response){
+        return response;
+    });
 };
 
 var findIndexInData = function(data, value) {
