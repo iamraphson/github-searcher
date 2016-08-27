@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-            <spinner name="html5spinner1"  on-loaded="getResultsPage(1)">
+            <spinner name="html5spinner1"  on-loaded="getResultsPage()">
                 <div class="overlay"></div>
                 <div class="spinner">
                     <div class="double-bounce1"></div>
@@ -16,7 +16,7 @@
             <div ng-if="result">
                 <div>
                     <div class="col-md-3"
-                         dir-paginate="repoContributors in repoContributorResponse|itemsPerPage:itemsPerPage">
+                         ng-repeat="repoContributors in repoContributorResponse">
                         <article class="card-user box-typical">
                             <div class="card-user-photo">
                                 <img ng-src="{{ repoContributors.avatar_url }}"
@@ -43,12 +43,6 @@
                         </article><!--.card-user-->
                     </div>
                 </div>
-                <dir-pagination-controls
-                        max-size="12"
-                        direction-links="true"
-                        boundary-links="true"
-                        on-page-change="getResultsPage(newPageNumber)" >
-                </dir-pagination-controls>
             </div>
         </div>
     </div>
