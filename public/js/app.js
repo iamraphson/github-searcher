@@ -14,7 +14,7 @@ var app = angular.module('githubSearch', ['ngRoute', 'ngStorage', 'ngMessages', 
 
         $authProvider.github({
             //clientId: '19bf78ad112be0318698'
-            clientId: 'ee56a3907763f5966ebf'
+            clientId: '',//PUT_YOUR_GITHUB_CLIENT_ID
         });
 
         // GitHub
