@@ -8,6 +8,7 @@ $ git clone https://github.com/iamraphson/github-searcher.git github-searcher/
 $ cd github-searcher
 $ npm install
 $ npm install -g nodemon
+$ npm install lodash --save
 $ nodemon server
 ```
 
